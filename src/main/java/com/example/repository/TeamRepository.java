@@ -47,8 +47,8 @@ public class TeamRepository {
 	}
 	
 	/**
-	 * 主キーから1件検索するメソッド
-	 * @param ID
+	 * 主キーから1件検索するメソッド.
+	 * @param id ID
 	 * @return チーム情報
 	 */
 	public Team load(Integer id) {

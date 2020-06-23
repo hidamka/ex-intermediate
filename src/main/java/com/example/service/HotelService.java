@@ -18,29 +18,23 @@ import com.example.repository.HotelRepository;
 @Service
 @Transactional
 public class HotelService {
-	
+
 	@Autowired
 	private HotelRepository repository;
-	
+
 	/**
-	 * 受け取った価格より安いホテルを返すメソッド.
+	 * 受け取った価格より安いホテルを返すメソッド　(未入力の場合は全件検索).
 	 * 
 	 * @param price 価格
-	 * @return　ホテル情報一覧
+	 * @return ホテル情報一覧
 	 */
-	public List<Hotel> findByPrice(Integer price){
-		List<Hotel> hotelList =	repository.findByPrice(price);
-		return hotelList;
+	public List<Hotel> findByPrice(String price) {
+		if (price == "") {
+			List<Hotel> hotelList = repository.findAll();
+			return hotelList;
+		} else {
+			List<Hotel> hotelList = repository.findByPrice(Integer.parseInt(price));
+			return hotelList;
+		}
 	}
-	
-	/**
-	 * 全件検索メソッド.
-	 * 
-	 * @return 全ホテル情報一覧
-	 */
-	public List<Hotel> findAll(){
-		List<Hotel> hotelList = repository.findAll();
-		return hotelList;
-	}
-
 }

@@ -19,24 +19,38 @@ import com.example.service.HotelService;
 @Controller
 @RequestMapping("/hotel")
 public class HotelController {
-	
+
 	@Autowired
 	private HotelService service;
-	
+
+	/**
+	 * 検索画面にフォワード.
+	 * 
+	 * @return 検索画面
+	 */
 	@RequestMapping("")
-	public String index() {
+	public String index(Model model) {
 		return "hotels/hotel-seach";
 	}
-	
+
+	/**
+	 * 価格を受け取り、検索結果を格納して検索画面にフォワード.
+	 * 
+	 * @param price 価格
+	 * @param model ホテル情報一覧
+	 * @return 検索画面
+	 */
 	@RequestMapping("/seach")
 	public String seach(String price, Model model) {
-		if(price == null) {
-			List<Hotel> hotelList =	service.findAll();
-			model.addAttribute("hotelList", hotelList);
-		}else {
-			List<Hotel> hotelList =	service.findByPrice(Integer.parseInt(price));
-			model.addAttribute("hotelList", hotelList);
+		if (price != "") {
+			if (Integer.parseInt(price) > 500000 || Integer.parseInt(price) < 5000) {
+				model.addAttribute("error", "5,000円以上500,000円以下で入力してください");
+				return "hotels/hotel-seach";
+			}
 		}
-		return "redirect:/hotel";
+		List<Hotel> hotelList = service.findByPrice(price);
+		model.addAttribute("hotelList", hotelList);
+
+		return "hotels/hotel-seach";
 	}
 }
